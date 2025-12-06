@@ -21,7 +21,7 @@ const users = new Map(); // socket.id -> user data
 const rooms = new Map(); // roomId -> room data
 
 // Hardcoded admin username - CHANGE THIS TO YOUR SECRET USERNAME
-const ADMIN_USERNAME = "CharlieMartin12344";
+const ADMIN_USERNAME = "AdminH214";
 
 // Generate 6-character room code
 function generateRoomCode() {
