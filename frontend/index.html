@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NiamChat - Real-time Chatting Room</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/main.jsx"></script>
+    
+    <!-- Simple sound for messages -->
+    <audio id="messageSound" preload="auto">
+        <!-- We'll load msg.mp3 later -->
+    </audio>
+    
+    <script>
+        // Check if first visit
+        if (!localStorage.getItem('niamchat_username')) {
+            localStorage.setItem('niamchat_first_visit', 'true');
+        }
+        
+        // Load message sound
+        const messageSound = document.getElementById('messageSound');
+        fetch('/sounds/msg.mp3')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                messageSound.src = url;
+            })
+            .catch(() => {
+                console.log('No custom sound found, using default');
+                // Create a simple beep sound as fallback
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.frequency.value = 800;
+                gainNode.gain.value = 0.1;
+                
+                messageSound.play = function() {
+                    oscillator.start();
+                    setTimeout(() => oscillator.stop(), 100);
+                };
+            });
+    </script>
+</body>
+</html>
