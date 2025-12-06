@@ -24,7 +24,7 @@
         
         // Load message sound
         const messageSound = document.getElementById('messageSound');
-        fetch('/sounds/msg.mp3')
+        fetch('http://macvg2025.github.io/niamchatv2/msg.mp3')
             .then(response => response.blob())
             .then(blob => {
                 const url = URL.createObjectURL(blob);
